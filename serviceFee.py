@@ -39,16 +39,22 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+@st.cache_data
+def load_data():
+    df = pd.read_excel('./Service Fee and Exempt Housing.xlsx')
+
+    df.drop(df.columns[0], axis=1, inplace=True)
+    df.rename(columns={df.columns[0]: 'Zip Code', df.columns[1]: 'Street Address'}, inplace=True)
+    df['Zip Code'] = df['Zip Code'].astype('str')
+    return df
+
+
 st.title('Michigan Service Fee Housing List')
 st.write("This list represents the service fee housing addresses on file with the Michigan Department of Treasury, and may be useful for preparing certain Michigan Homestead Property Tax Credit claims.")
 st.caption(f"Last downloaded from {source_url} on February 5, 2025.")
 st.caption("__*** Data is not all-inclusive, see the source website for disclaimers.__ ***")
 
-df = pd.read_excel('./Service Fee and Exempt Housing.xlsx')
-
-df.drop(df.columns[0], axis=1, inplace=True)
-df.rename(columns={df.columns[0]: 'Zip Code', df.columns[1]: 'Street Address'}, inplace=True)
-df['Zip Code'] = df['Zip Code'].astype('str')
+df = load_data()
 
 df_container = st.container()
 with df_container:
