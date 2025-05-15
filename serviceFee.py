@@ -45,10 +45,12 @@ def load_data():
 
     # df.drop(df.columns[0], axis=1, inplace=True)  // 2025-05-14: New source file removed blank column on Service Fee sheet
     df.rename(columns={df.columns[0]: 'Zip Code', df.columns[1]: 'Street Address'}, inplace=True)
-    df['Street'] = df['Street Address'].str.extract(r'\s1?\/?2?\s?(.*)')
+
+    # Extract street name from address to sort by zip code and street name
+    df['Street'] = df['Street Address'].str.extract(r'\s1?\/?2?\s?(.*)')  #Exclude anything before the first space, and optionally "1/2"
     df.sort_values(['Zip Code','Street'], inplace=True)
-    df.drop(['Street'], axis=1, inplace=True)
-    df['Zip Code'] = df['Zip Code'].astype('str')
+    df.drop(['Street'], axis=1, inplace=True)  #Only needed street for sorting, not display
+    df['Zip Code'] = df['Zip Code'].astype('str') 
     return df
 
 
