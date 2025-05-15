@@ -45,7 +45,7 @@ def load_data():
 
     # df.drop(df.columns[0], axis=1, inplace=True)  // 2025-05-14: New source file removed blank column on Service Fee sheet
     df.rename(columns={df.columns[0]: 'Zip Code', df.columns[1]: 'Street Address'}, inplace=True)
-    df['Street'] = df['Street Address'].str.extract(r'\s(.*)')
+    df['Street'] = df['Street Address'].str.extract(r'\s1?\/?2?\s?(.*)')
     df.sort_values(['Zip Code','Street'], inplace=True)
     df.drop(['Street'], axis=1, inplace=True)
     df['Zip Code'] = df['Zip Code'].astype('str')
